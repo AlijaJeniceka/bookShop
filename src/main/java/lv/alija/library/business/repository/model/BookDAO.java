@@ -39,6 +39,12 @@ public class BookDAO {
     @Column(name="release_year")
     private Long releaseYear;
 
+    @Column(name="isbn")
+    private String isbn;
+
+    @Column(name="quantity")
+    private Long quantity;
+
     public BookDAO(Long bookId) {
     }
 }

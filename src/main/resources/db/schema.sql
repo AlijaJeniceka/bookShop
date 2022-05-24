@@ -6,5 +6,7 @@ CREATE TABLE BOOK (
   author varchar(250) NOT NULL,
   genre varchar(250) NOT NULL,
   release_year bigint(5) NOT NULL,
+  isbn varchar(17) NOT NULL,
+  quantity bigint NOT NULL,
   PRIMARY KEY (id)
   );
