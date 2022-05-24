@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -28,7 +29,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findAllBooks() {
         List<BookDAO> booksDAO = bookRepository.findAll();
-
+        log.info("Get book list. Size is : {}", booksDAO::size);
         return booksDAO.stream().map(bookMapper::bookDAOToBook)
                 .collect(Collectors.toList());
     }
@@ -37,18 +38,19 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> findBookById(Long id) {
         Optional<Book> bookById = bookRepository.findById(id)
                 .flatMap(bookDAO -> Optional.ofNullable(bookMapper.bookDAOToBook(bookDAO)));
-
+        log.info("Book with id {} is {}", id, bookById);
         return bookById;
     }
 
     @Override
     public Book saveBook(Book book) throws Exception {
-        if(!hasNoMatch(book)){
+        if (!hasNoMatch(book)) {
+            log.error("Book with same isbn number already exists. Conflict exception. ");
             throw new HttpClientErrorException(HttpStatus.CONFLICT);
         }
         BookDAO bookDAO = bookMapper.bookToBookDAO(book);
         BookDAO bookSaved = bookRepository.save(bookDAO);
-
+        log.info("New book saved: {}", () -> bookSaved);
         return bookMapper.bookDAOToBook(bookSaved);
     }
 
@@ -56,18 +58,17 @@ public class BookServiceImpl implements BookService {
     public Book updateBook(Book book) throws Exception {
         BookDAO bookDAO = bookMapper.bookToBookDAO(book);
         BookDAO bookSaved = bookRepository.save(bookDAO);
-
+        log.info("Book is updated: {}", () -> bookSaved);
         return bookMapper.bookDAOToBook(bookSaved);
     }
 
     @Override
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
+        log.info("Book with id {} is deleted", id);
     }
 
-
-
-    public boolean hasNoMatch(Book book){
+    public boolean hasNoMatch(Book book) {
         return bookRepository.findAll().stream()
                 .noneMatch(newBook ->
                         newBook.getIsbn().equalsIgnoreCase(book.getIsbn())

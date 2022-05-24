@@ -5,7 +5,7 @@ import lv.alija.library.model.Book;
 import org.mapstruct.Mapper;
 
 
-@Mapper(componentModel="spring")
+@Mapper(componentModel = "spring")
 public interface BookMapper {
 
     BookDAO bookToBookDAO(Book book);

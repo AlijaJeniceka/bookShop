@@ -11,9 +11,9 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book{
+public class Book {
 
-    @Min(value=1)
+    @Min(value = 1)
     private Long id;
 
     @NotNull
