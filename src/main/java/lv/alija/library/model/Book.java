@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book {
+public class Book implements Serializable {
 
     @Min(value = 1)
     private Long id;

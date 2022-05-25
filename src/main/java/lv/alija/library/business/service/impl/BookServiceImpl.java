@@ -8,6 +8,7 @@ import lv.alija.library.business.repository.model.BookDAO;
 import lv.alija.library.business.service.BookService;
 import lv.alija.library.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -26,6 +27,7 @@ public class BookServiceImpl implements BookService {
     @Autowired
     BookMapper bookMapper;
 
+    @Cacheable(value = "bookList")
     @Override
     public List<Book> findAllBooks() {
         List<BookDAO> booksDAO = bookRepository.findAll();
