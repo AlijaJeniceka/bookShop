@@ -31,11 +31,7 @@ public class Config {
     private Docket appendTags(Docket docket) {
         return docket.tags(
                 new Tag(DescriptionVariables.BOOK,
-                        "Used to get, create, update and delete book from library"),
-                new Tag("TRAINING",
-                        "Controller used to get, create, update and delete trainings"),
-                new Tag("TRAINING_DETAILS",
-                        "Controller used to get, create, update and delete training details")
+                        "Used to get, create, update and delete book from library")
         );
     }
     private ApiInfo apiInfo() {
