@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import lv.alija.library.business.service.BookService;
 import lv.alija.library.model.Book;
 import lv.alija.library.swagger.DescriptionVariables;
+import lv.alija.library.swagger.HTMLResponseMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,10 +45,9 @@ public class BookController {
             notes = "Returns the entire list of books",
             response = Book.class, responseContainer = "List")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "The request has succeeded", response = Book.class, responseContainer = "List"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The server has not found anything matching the Request-URI"),
-            @ApiResponse(code = 500, message = "Server error")})
+            @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200, response = Book.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     public ResponseEntity<List<Book>> findAllBooks() {
         log.info("Retrieve list of the books.");
         List<Book> books = bookService.findAllBooks();
@@ -60,10 +60,9 @@ public class BookController {
             notes = "Provide an id to search specific book in database",
             response = Book.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "The request has succeeded"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The server has not found anything matching the Request-URI"),
-            @ApiResponse(code = 500, message = "Server error")})
+            @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     public ResponseEntity<Book> findBookById(@ApiParam(value = "id of the book", required = true)
                                              @NonNull @PathVariable("id") Long id) {
         log.info("Retrieve book by book id {}.", id);
@@ -77,11 +76,10 @@ public class BookController {
             notes = "If provide valid book, saves it",
             response = Book.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "The book is successfully saved"),
-            @ApiResponse(code = 400, message = "Missed required parameters, parameters are not valid"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The server has not found anything matching the Request-URI"),
-            @ApiResponse(code = 500, message = "Server error")})
+            @ApiResponse(code = 201, message = HTMLResponseMessages.HTTP_201),
+            @ApiResponse(code = 400, message = HTMLResponseMessages.HTTP_400),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Book> saveBook(@Valid @RequestBody Book book, BindingResult bindingResult) throws Exception {
         log.info("Create new book by passing: {}", book);
@@ -99,11 +97,10 @@ public class BookController {
             notes = "Updates the book if provided id exists",
             response = Book.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "The book is successfully updated"),
-            @ApiResponse(code = 400, message = "Missed required parameters, parameters are not valid"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The server has not found anything matching the Request-URI"),
-            @ApiResponse(code = 500, message = "Server error")})
+            @ApiResponse(code = 201, message = HTMLResponseMessages.HTTP_201),
+            @ApiResponse(code = 400, message = HTMLResponseMessages.HTTP_400),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<Book> updateBookById(@ApiParam(value = "id of the book", required = true)
                                                @PathVariable @NotNull Long id,
@@ -125,10 +122,9 @@ public class BookController {
             notes = "Deletes the book if provided id exists",
             response = Book.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 204, message = "The book is successfully deleted"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The server has not found anything matching the Request-URI"),
-            @ApiResponse(code = 500, message = "Server error")})
+            @ApiResponse(code = 204, message = HTMLResponseMessages.HTTP_204_WITHOUT_DATA),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteBookById(@ApiParam(value = "The id of the book", required = true)
                                                @NonNull @PathVariable Long id) {
