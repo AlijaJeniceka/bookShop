@@ -23,7 +23,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -54,7 +53,7 @@ class BookServiceTest {
     }
 
     @BeforeEach
-    void init(){
+    void init() {
         bookDAO = createBookDAO();
         book = createBook();
         bookDAOList = createBookDAOList();
@@ -71,7 +70,7 @@ class BookServiceTest {
     }
 
     @Test
-    void findAllBooks_InvalidTest(){
+    void findAllBooks_InvalidTest() {
         when(bookRepository.findAll()).thenReturn(Collections.emptyList());
         Assertions.assertTrue(bookService.findAllBooks().isEmpty());
         verify(bookRepository, times(1)).findAll();
@@ -116,6 +115,7 @@ class BookServiceTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> bookService.saveBook(book));
         verify(bookRepository, times(1)).save(bookDAO);
     }
+
     @Test
     void saveBookTest_InvalidDuplicateTest() {
         Book bookSaved = createBook();
@@ -135,8 +135,8 @@ class BookServiceTest {
     void deleteBookByIdTest() {
         bookService.deleteBookById(anyLong());
         verify(bookRepository, times(1)).deleteById(anyLong());
-
     }
+
     @Test
     void deleteBookById_InvalidTest() {
         doThrow(new IllegalArgumentException()).when(bookRepository).deleteById(anyLong());
@@ -145,16 +145,24 @@ class BookServiceTest {
     }
 
     @Test
-    void updateBookTest() {
-
+    void updateBookTest() throws Exception {
+        when(bookRepository.save(bookDAO)).thenReturn(bookDAO);
+        when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
+        when(bookMapper.bookToBookDAO(book)).thenReturn(bookDAO);
+        Book bookSaved = bookService.updateBook(book);
+        assertEquals(book, bookSaved);
+        verify(bookRepository, times(1)).save(bookDAO);
     }
+
     @Test
     void updateBookTest_InvalidTest() {
-
+        when(bookRepository.save(bookDAO)).thenThrow(new IllegalArgumentException());
+        when(bookMapper.bookToBookDAO(book)).thenReturn(bookDAO);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> bookService.updateBook(book));
+        verify(bookRepository, times(1)).save(bookDAO);
     }
 
-
-    private List<BookDAO> createBookDAOList(){
+    private List<BookDAO> createBookDAOList() {
         List<BookDAO> listDAO = new ArrayList<>();
         BookDAO bookDAO1 = createBookDAO();
         BookDAO bookDAO2 = createBookDAO();
@@ -162,7 +170,8 @@ class BookServiceTest {
         listDAO.add(bookDAO2);
         return listDAO;
     }
-    private BookDAO createBookDAO(){
+
+    private BookDAO createBookDAO() {
         BookDAO bookDAO = new BookDAO();
         bookDAO.setId(1L);
         bookDAO.setAuthor("Author1");
@@ -173,7 +182,8 @@ class BookServiceTest {
         bookDAO.setQuantity(2L);
         return bookDAO;
     }
-    private List<Book> createBookList(){
+
+    private List<Book> createBookList() {
         List<Book> list = new ArrayList<>();
         Book book1 = createBook();
         Book book2 = createBook();
@@ -181,7 +191,8 @@ class BookServiceTest {
         list.add(book2);
         return list;
     }
-    private Book createBook(){
+
+    private Book createBook() {
         Book book = new Book();
         book.setId(1L);
         book.setAuthor("Author1");

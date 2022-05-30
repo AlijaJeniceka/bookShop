@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -15,8 +15,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,39 +61,149 @@ class BookControllerTest {
     }
 
     @Test
-    void findAllBooks_InvalidTest(){}
+    void findBookByIdTest() throws Exception {
+        Optional<Book> book = Optional.of(createBook());
+        when(bookService.findBookById(anyLong())).thenReturn(book);
 
-    @Test
-    void findBookByIdTest() {
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get(URL + "/1"))
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Title1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.author").value("Author1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.genre").value("Genre1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.releaseYear").value(2022L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("000-00-00-0001"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(2L))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).findBookById(anyLong());
     }
 
     @Test
-    void findBookById_InvalidTest() {}
-
-    @Test
-    void saveBookTest() {
+    void findBookById_InvalidTest() throws Exception{
+        Optional<Book> book = Optional.of(createBook());
+        book.get().setId(null);
+        when(bookService.findBookById(anyLong())).thenReturn(Optional.empty());
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .get(URL + null)
+                .content(asJsonString(book))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(bookService, times(0)).findBookById(null);
     }
 
     @Test
-    void saveBookTest_InvalidTest() {}
+    void saveBookTest() throws Exception {
+        Book book = createBook();
 
-    @Test
-    void saveBookTest_InvalidDuplicateTest() { }
+        when(bookService.saveBook(book)).thenReturn(book);
 
-    @Test
-    void updateBookByIdTest() {
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post(URL)
+                .content(asJsonString(book))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isCreated());
+        verify(bookService, times(1)).saveBook(book);
     }
 
     @Test
-    void updateBookTest_InvalidTest() {
-
+    void saveBookTest_InvalidTest() throws Exception {
+        Book book = createBook();
+        book.setTitle("");
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post(URL)
+                        .content(asJsonString(book))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
+                        .andExpect(status().is4xxClientError());
+        verify(bookService, times(0)).saveBook(book);
     }
 
     @Test
-    void deleteBookByIdTest() {
+    void updateBookByIdTest() throws Exception {
+        Book book = createBook();
+        when(bookService.findBookById(book.getId())).thenReturn(Optional.of(book));
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .put(URL + "/1")
+                .content(asJsonString(book))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
+                .andExpect(status().isCreated());
+        verify(bookService, times(1)).updateBook(book);
+    }
+
+    @Test
+    void updateBookByIdTest_InvalidTest() throws Exception {
+
+        Book book = createBook();
+        book.setId(0L);
+        when(bookService.findBookById(0L)).thenReturn(Optional.empty());
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .put(URL + "/")
+                .content(asJsonString(book))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+        verify(bookService, times(0)).updateBook(book);
     }
     @Test
-    void deleteBookById_InvalidTest() {}
+    void updateBookByIdTestNotFound_InvalidTest() throws Exception {
+        Book book = createBook();
+        when(bookService.findBookById(1L)).thenReturn(Optional.empty());
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put(URL + "/3")
+                        .content(asJsonString(book))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(bookService, times(0)).updateBook(book);
+    }
+
+    @Test
+    void deleteBookByIdTest() throws Exception {
+        Optional<Book> book = Optional.of(createBook());
+        when(bookService.findBookById(anyLong())).thenReturn(book);
+
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .delete(URL + "/1")
+                .content(asJsonString(book))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        verify(bookService, times(1)).deleteBookById(anyLong());
+    }
+
+    @Test
+    void deleteBookById_InvalidTest() throws Exception {
+        Optional<Book> book = Optional.of(createBook());
+        book.get().setId(0L);
+        when(bookService.findBookById(0L)).thenReturn(book);
+
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .delete(URL + "/0")
+                .content(asJsonString(book))
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+        verify(bookService, times(0)).deleteBookById(0L);
+    }
+    @Test
+    void deleteBookByIdNotFound_InvalidTest() throws Exception {
+        Optional<Book> book = Optional.of(createBook());
+
+        when(bookService.findBookById(1L)).thenReturn(book);
+
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .delete(URL + "/3")
+                        .content(asJsonString(book))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        verify(bookService, times(0)).deleteBookById(3L);
+    }
 
     private List<Book> createBookList(){
         List<Book> list = new ArrayList<>();
@@ -99,7 +211,7 @@ class BookControllerTest {
         Book book2 = createBook();
         list.add(book1);
         list.add(book2);
-       return list;
+        return list;
     }
     private Book createBook(){
         Book book = new Book();

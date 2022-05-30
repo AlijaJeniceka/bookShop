@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -24,14 +25,17 @@ public class Book implements Serializable {
 
     @ApiModelProperty(notes = "Title of the book")
     @NotNull
+    @NotBlank(message = "Please fill the field - title")
     private String title;
 
     @ApiModelProperty(notes = "Author of the book")
     @NotNull
+    @NotBlank(message = "Please fill the field - author")
     private String author;
 
     @ApiModelProperty(notes = "Genre of the book")
     @NotNull
+    @NotBlank(message = "Please fill the field - genre")
     private String genre;
 
     @ApiModelProperty(notes = "Book release year")
@@ -40,6 +44,7 @@ public class Book implements Serializable {
 
     @ApiModelProperty(notes = "Book ISBN number")
     @NotNull
+    @NotBlank(message = "Please fill the field - isbn")
     private String isbn;
 
     @ApiModelProperty(notes = "Book quantity")
