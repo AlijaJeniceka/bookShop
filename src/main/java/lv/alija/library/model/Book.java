@@ -1,6 +1,5 @@
 package lv.alija.library.model;
 
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-
 
 @ApiModel(description = "Model of book data")
 @Data
@@ -50,5 +48,4 @@ public class Book implements Serializable {
     @ApiModelProperty(notes = "Book quantity")
     @NotNull
     private Long quantity;
-
 }

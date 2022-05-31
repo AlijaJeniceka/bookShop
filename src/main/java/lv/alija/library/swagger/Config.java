@@ -17,7 +17,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class Config {
 
     @Bean
-    public Docket swaggerConfiguration(){
+    public Docket swaggerConfiguration() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("lv.alija.library"))
@@ -28,12 +28,14 @@ public class Config {
         return appendTags(docket);
 
     }
+
     private Docket appendTags(Docket docket) {
         return docket.tags(
                 new Tag(DescriptionVariables.BOOK,
                         "Used to get, create, update and delete book from library")
         );
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Library API")

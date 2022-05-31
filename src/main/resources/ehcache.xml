@@ -6,7 +6,6 @@
             http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
 
     <cache alias="bookList">
-<!--        <key-type>java.util.List</key-type>-->
         <value-type>java.util.List</value-type>
         <expiry>
             <ttl unit="minutes">5</ttl>
@@ -23,7 +22,7 @@
         </listeners>
 
         <resources>
-            <heap unit="entries">5</heap>
+            <heap unit="entries">2</heap>
             <offheap unit="MB">20</offheap>
         </resources>
     </cache>

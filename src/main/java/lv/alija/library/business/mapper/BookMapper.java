@@ -4,7 +4,6 @@ import lv.alija.library.business.repository.model.BookDAO;
 import lv.alija.library.model.Book;
 import org.mapstruct.Mapper;
 
-
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
