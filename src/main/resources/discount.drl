@@ -1,0 +1,34 @@
+package KieRule;
+import lv.alija.bookShop.model.Client;
+
+rule "Senior"
+
+when
+clientObject: Client(type == "Senior" && age > 64 || documentForDiscount == true);
+then
+clientObject.setDiscount(20L);
+end;
+
+rule "Student"
+
+when
+clientObject: Client(type == "Student" && age < 64 && documentForDiscount==true);
+then
+clientObject.setDiscount(15L);
+end;
+
+rule "Scholar"
+
+when
+clientObject: Client(type == "Scholar" && age < 20 && documentForDiscount==true);
+then
+clientObject.setDiscount(10L);
+end;
+
+rule "Person"
+
+when
+clientObject: Client(type == "Person" );
+then
+clientObject.setDiscount(0L);
+end;
