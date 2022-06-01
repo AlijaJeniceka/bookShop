@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -17,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Book implements Serializable {
 
-    @ApiModelProperty(notes = "The unique id of the book")
+    @ApiModelProperty(notes = "The unique id of the book should be more then 0")
     @Min(value = 1)
     private Long id;
 
@@ -46,6 +47,6 @@ public class Book implements Serializable {
     private String isbn;
 
     @ApiModelProperty(notes = "Book quantity")
-    @NotNull
+    @Min(value = 0)
     private Long quantity;
 }
