@@ -3,7 +3,6 @@ package lv.alija.bookShop.business.service.impl;
 import lombok.extern.log4j.Log4j2;
 import lv.alija.bookShop.business.mapper.ClientMapper;
 import lv.alija.bookShop.business.repository.ClientRepository;
-import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.business.repository.model.ClientDAO;
 import lv.alija.bookShop.business.service.ClientService;
 import lv.alija.bookShop.model.Client;

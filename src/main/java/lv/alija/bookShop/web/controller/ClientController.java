@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.log4j.Log4j2;
-import lv.alija.bookShop.business.service.BookService;
 import lv.alija.bookShop.business.service.ClientService;
 import lv.alija.bookShop.model.Client;
 import lv.alija.bookShop.swagger.DescriptionVariables;
