@@ -20,7 +20,7 @@ public class Config {
     public Docket swaggerConfiguration() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("lv.alija.library"))
+                .apis(RequestHandlerSelectors.basePackage("lv.alija.bookShop"))
                 .paths(PathSelectors.ant("/error").negate())
                 .build()
                 .apiInfo(apiInfo());
@@ -32,14 +32,14 @@ public class Config {
     private Docket appendTags(Docket docket) {
         return docket.tags(
                 new Tag(DescriptionVariables.BOOK,
-                        "Used to get, create, update and delete book from library")
+                        "Used to get, create, update and delete book from book shop")
         );
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Library API")
-                .description("Library API")
+                .title("Book Shop API")
+                .description("Book Shop API")
                 .version("1.0")
                 .build();
     }
