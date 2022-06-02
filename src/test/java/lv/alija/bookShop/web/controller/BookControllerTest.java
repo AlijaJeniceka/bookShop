@@ -1,4 +1,4 @@
-package lv.alija.library.web.controller;
+package lv.alija.bookShop.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lv.alija.bookShop.business.service.impl.BookServiceImpl;

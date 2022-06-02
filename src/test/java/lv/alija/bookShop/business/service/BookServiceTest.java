@@ -1,4 +1,4 @@
-package lv.alija.library.business.service;
+package lv.alija.bookShop.business.service;
 
 import lv.alija.bookShop.business.mapper.BookMapper;
 import lv.alija.bookShop.business.repository.BookRepository;
