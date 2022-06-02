@@ -28,7 +28,7 @@ end;
 rule "Person"
 
 when
-clientObject: Client(type == "Person" );
+clientObject: Client(type == "Person" && documentForDiscount==true);
 then
-clientObject.setDiscount(0L);
+clientObject.setDiscount(5L);
 end;
