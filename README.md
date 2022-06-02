@@ -1,3 +1,3 @@
 # bookShop
 demo microservice for books
-and rules engine for book shop client for discounts
+and rules engine for bookShop clients discount
