@@ -88,6 +88,7 @@ class BookServiceTest {
         assertEquals(book.getReleaseYear(), bookById.get().getReleaseYear());
         assertEquals(book.getIsbn(), bookById.get().getIsbn());
         assertEquals(book.getQuantity(), bookById.get().getQuantity());
+        assertEquals(book.getPrice(), bookById.get().getPrice());
         verify(bookRepository, times(1)).findById(anyLong());
     }
 
@@ -126,6 +127,7 @@ class BookServiceTest {
         bookSaved.setReleaseYear(2022L);
         bookSaved.setIsbn("000-00-00-0001");
         bookSaved.setQuantity(2L);
+        bookSaved.setPrice(4L);
         when(bookRepository.findAll()).thenReturn(bookDAOList);
         Assertions.assertThrows(HttpClientErrorException.class, () -> bookService.saveBook(bookSaved));
         verify(bookRepository, times(0)).save(bookDAO);
@@ -180,6 +182,7 @@ class BookServiceTest {
         bookDAO.setReleaseYear(2022L);
         bookDAO.setIsbn("000-00-00-0001");
         bookDAO.setQuantity(2L);
+        bookDAO.setPrice(4L);
         return bookDAO;
     }
 
@@ -201,6 +204,7 @@ class BookServiceTest {
         book.setReleaseYear(2022L);
         book.setIsbn("000-00-00-0001");
         book.setQuantity(2L);
+        book.setPrice(4L);
         return book;
     }
 }

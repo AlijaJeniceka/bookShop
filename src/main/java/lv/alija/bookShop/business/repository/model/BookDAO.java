@@ -41,6 +41,9 @@ public class BookDAO {
     @Column(name = "quantity")
     private Long quantity;
 
+    @Column(name = "price")
+    private Long price;
+
     public BookDAO(Long bookId) {
     }
 }

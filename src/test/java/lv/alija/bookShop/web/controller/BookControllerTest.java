@@ -55,6 +55,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(2022L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value("000-00-00-0001"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity").value(2L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(4L))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).findAllBooks();
     }
@@ -74,6 +75,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.releaseYear").value(2022L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value("000-00-00-0001"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(2L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(4L))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).findBookById(anyLong());
     }
@@ -221,6 +223,7 @@ class BookControllerTest {
         book.setReleaseYear(2022L);
         book.setIsbn("000-00-00-0001");
         book.setQuantity(2L);
+        book.setPrice(4L);
         return book;
     }
 
