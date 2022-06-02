@@ -48,4 +48,9 @@ public class Book implements Serializable {
     @ApiModelProperty(notes = "Book quantity")
     @Min(value = 0)
     private Long quantity;
+
+    @ApiModelProperty(notes = "Book price")
+    @Min(value = 0)
+    @NotNull
+    private Long price;
 }

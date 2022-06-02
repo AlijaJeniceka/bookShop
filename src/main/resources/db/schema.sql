@@ -8,5 +8,6 @@ CREATE TABLE BOOK (
   release_year bigint(5) NOT NULL,
   isbn varchar(17) NOT NULL,
   quantity bigint NOT NULL,
+  price bigint NOT NULL,
   PRIMARY KEY (id)
   );
