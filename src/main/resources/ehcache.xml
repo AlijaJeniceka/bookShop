@@ -13,7 +13,7 @@
 
         <listeners>
             <listener>
-                <class>lv.alija.library.caching.CacheEventLogger</class>
+                <class>lv.alija.bookShop.caching.CacheEventLogger</class>
                 <event-firing-mode>ASYNCHRONOUS</event-firing-mode>
                 <event-ordering-mode>UNORDERED</event-ordering-mode>
                 <events-to-fire-on>CREATED</events-to-fire-on>

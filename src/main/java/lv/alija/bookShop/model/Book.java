@@ -1,4 +1,4 @@
-package lv.alija.library.model;
+package lv.alija.bookShop.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

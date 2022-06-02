@@ -1,4 +1,4 @@
-package lv.alija.library.web.controller;
+package lv.alija.bookShop.web.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -6,10 +6,10 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.log4j.Log4j2;
-import lv.alija.library.business.service.BookService;
-import lv.alija.library.model.Book;
-import lv.alija.library.swagger.DescriptionVariables;
-import lv.alija.library.swagger.HTMLResponseMessages;
+import lv.alija.bookShop.business.service.BookService;
+import lv.alija.bookShop.model.Book;
+import lv.alija.bookShop.swagger.DescriptionVariables;
+import lv.alija.bookShop.swagger.HTMLResponseMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

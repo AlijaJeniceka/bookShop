@@ -1,6 +1,6 @@
-package lv.alija.library.business.repository;
+package lv.alija.bookShop.business.repository;
 
-import lv.alija.library.business.repository.model.BookDAO;
+import lv.alija.bookShop.business.repository.model.BookDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

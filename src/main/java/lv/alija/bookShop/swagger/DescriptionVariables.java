@@ -1,4 +1,4 @@
-package lv.alija.library.swagger;
+package lv.alija.bookShop.swagger;
 
 public class DescriptionVariables {
 

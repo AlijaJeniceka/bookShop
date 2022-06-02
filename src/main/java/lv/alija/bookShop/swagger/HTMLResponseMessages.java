@@ -1,4 +1,4 @@
-package lv.alija.library.swagger;
+package lv.alija.bookShop.swagger;
 
 public class HTMLResponseMessages {
     public static final String HTTP_200 = "Successful request gets this response code and returns requested data. " +

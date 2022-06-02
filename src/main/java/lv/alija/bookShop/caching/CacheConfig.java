@@ -1,4 +1,4 @@
-package lv.alija.library.caching;
+package lv.alija.bookShop.caching;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;

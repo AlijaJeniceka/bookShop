@@ -1,7 +1,7 @@
-package lv.alija.library.business.mapper;
+package lv.alija.bookShop.business.mapper;
 
-import lv.alija.library.business.repository.model.BookDAO;
-import lv.alija.library.model.Book;
+import lv.alija.bookShop.business.repository.model.BookDAO;
+import lv.alija.bookShop.model.Book;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

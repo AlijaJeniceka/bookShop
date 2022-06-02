@@ -1,4 +1,4 @@
-package lv.alija.library.swagger;
+package lv.alija.bookShop.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

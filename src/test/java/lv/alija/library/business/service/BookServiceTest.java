@@ -1,10 +1,10 @@
 package lv.alija.library.business.service;
 
-import lv.alija.library.business.mapper.BookMapper;
-import lv.alija.library.business.repository.BookRepository;
-import lv.alija.library.business.repository.model.BookDAO;
-import lv.alija.library.business.service.impl.BookServiceImpl;
-import lv.alija.library.model.Book;
+import lv.alija.bookShop.business.mapper.BookMapper;
+import lv.alija.bookShop.business.repository.BookRepository;
+import lv.alija.bookShop.business.repository.model.BookDAO;
+import lv.alija.bookShop.business.service.impl.BookServiceImpl;
+import lv.alija.bookShop.model.Book;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

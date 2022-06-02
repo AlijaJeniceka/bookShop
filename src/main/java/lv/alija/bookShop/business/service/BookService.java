@@ -1,6 +1,6 @@
-package lv.alija.library.business.service;
+package lv.alija.bookShop.business.service;
 
-import lv.alija.library.model.Book;
+import lv.alija.bookShop.model.Book;
 
 import java.util.List;
 import java.util.Optional;

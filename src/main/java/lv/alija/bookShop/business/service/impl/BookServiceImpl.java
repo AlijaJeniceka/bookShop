@@ -1,11 +1,11 @@
-package lv.alija.library.business.service.impl;
+package lv.alija.bookShop.business.service.impl;
 
 import lombok.extern.log4j.Log4j2;
-import lv.alija.library.business.mapper.BookMapper;
-import lv.alija.library.business.repository.BookRepository;
-import lv.alija.library.business.repository.model.BookDAO;
-import lv.alija.library.business.service.BookService;
-import lv.alija.library.model.Book;
+import lv.alija.bookShop.business.mapper.BookMapper;
+import lv.alija.bookShop.business.repository.model.BookDAO;
+import lv.alija.bookShop.business.service.BookService;
+import lv.alija.bookShop.business.repository.BookRepository;
+import lv.alija.bookShop.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

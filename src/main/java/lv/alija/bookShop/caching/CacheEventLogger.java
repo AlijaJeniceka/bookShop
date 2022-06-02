@@ -1,4 +1,4 @@
-package lv.alija.library.caching;
+package lv.alija.bookShop.caching;
 
 import org.ehcache.event.CacheEvent;
 import org.ehcache.event.CacheEventListener;

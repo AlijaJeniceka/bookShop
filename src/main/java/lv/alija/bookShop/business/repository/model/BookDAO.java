@@ -1,4 +1,4 @@
-package lv.alija.library.business.repository.model;
+package lv.alija.bookShop.business.repository.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
