@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -28,6 +29,7 @@ public class BookServiceImpl implements BookService {
     BookMapper bookMapper;
 
     @Cacheable(value = "bookList")
+    @Scheduled(fixedDelay = 300000)
     @Override
     public List<Book> findAllBooks() {
         List<BookDAO> booksDAO = bookRepository.findAll();
