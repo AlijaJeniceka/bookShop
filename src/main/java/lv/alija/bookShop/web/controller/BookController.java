@@ -39,6 +39,11 @@ public class BookController {
     @Autowired
     BookService bookService;
 
+
+    /**
+     *
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation(value = "Find list of all books",
             notes = "Returns the entire list of books",
@@ -54,6 +59,11 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ApiOperation(value = "Find the book by id",
             notes = "Provide an id to search specific book in database",

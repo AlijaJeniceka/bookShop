@@ -11,9 +11,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+
 @ApiModel(description = "Model of book data")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Book implements Serializable {
 
