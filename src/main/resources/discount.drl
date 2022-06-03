@@ -4,7 +4,7 @@ import lv.alija.bookShop.model.Client;
 rule "Senior"
 
 when
-clientObject: Client(type == "Senior" && age > 64 || documentForDiscount == true);
+clientObject: Client(type == type.SENIOR && age > 64 || documentForDiscount == true);
 then
 clientObject.setDiscount(20L);
 end;
@@ -12,7 +12,7 @@ end;
 rule "Student"
 
 when
-clientObject: Client(type == "Student" && age < 64 && documentForDiscount==true);
+clientObject: Client(type == type.STUDENT && age < 64 && documentForDiscount==true);
 then
 clientObject.setDiscount(15L);
 end;
@@ -20,7 +20,7 @@ end;
 rule "Scholar"
 
 when
-clientObject: Client(type == "Scholar" && age < 20 && documentForDiscount==true);
+clientObject: Client(type == type.SCHOLAR && age < 20 && documentForDiscount==true);
 then
 clientObject.setDiscount(10L);
 end;
@@ -28,7 +28,7 @@ end;
 rule "Person"
 
 when
-clientObject: Client(type == "Person" && documentForDiscount==true);
+clientObject: Client(type == type.PERSON && documentForDiscount==true);
 then
 clientObject.setDiscount(5L);
 end;

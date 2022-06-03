@@ -3,9 +3,12 @@ package lv.alija.bookShop.business.repository.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lv.alija.bookShop.model.enums.ClientTypes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +27,8 @@ public class ClientDAO {
     private Long id;
 
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private ClientTypes type;
 
     @Column(name = "age")
     private Long age;

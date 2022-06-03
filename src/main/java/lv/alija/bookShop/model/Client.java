@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lv.alija.bookShop.model.enums.ClientTypes;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -22,8 +23,7 @@ public class Client {
 
     @ApiModelProperty(notes = "Client's type")
     @NotNull
-    @NotBlank(message = "Please fill the field - type")
-    private String type;
+    private ClientTypes type;
 
     @ApiModelProperty(notes = "Client's age")
     @NotNull
