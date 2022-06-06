@@ -2,18 +2,20 @@ package lv.alija.bookShop.business.mapper;
 
 import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.model.Book;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-@WebMvcTest(BookMapperImpl.class)
 class BookMapperTest {
 
-    @Autowired
-    private BookMapper bookMapper;
+    private BookMapperImpl bookMapper;
+
+    @BeforeEach
+    public void setUp(){
+        bookMapper = new BookMapperImpl();
+    }
 
     @Test
     void bookToBookDAOTest() {
