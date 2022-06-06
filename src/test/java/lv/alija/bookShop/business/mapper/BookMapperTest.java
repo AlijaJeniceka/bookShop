@@ -2,17 +2,12 @@ package lv.alija.bookShop.business.mapper;
 
 import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.model.Book;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @WebMvcTest(BookMapperImpl.class)
 class BookMapperTest {
@@ -47,7 +42,6 @@ class BookMapperTest {
         Book book = null;
         BookDAO bookDAO = bookMapper.bookToBookDAO(book);
         assertNull(null);
-
     }
 
     @Test
@@ -76,6 +70,5 @@ class BookMapperTest {
         BookDAO bookDAO = null;
         Book book = bookMapper.bookDAOToBook(bookDAO);
         assertNull(null);
-
     }
 }

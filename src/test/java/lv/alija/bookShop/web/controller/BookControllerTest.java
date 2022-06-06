@@ -3,7 +3,6 @@ package lv.alija.bookShop.web.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lv.alija.bookShop.business.service.impl.BookServiceImpl;
 import lv.alija.bookShop.model.Book;
-import lv.alija.bookShop.web.controller.BookController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

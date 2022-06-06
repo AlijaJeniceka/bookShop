@@ -1,6 +1,5 @@
 package lv.alija.bookShop.web.controller;
 
-
 import lv.alija.bookShop.business.repository.BookRepository;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,6 @@ class BookControllerIntegrationTest {
 
     @MockBean
     private BookRepository bookRepository;
-
-
 
     @Test
     public void contextLoads() throws JSONException {
