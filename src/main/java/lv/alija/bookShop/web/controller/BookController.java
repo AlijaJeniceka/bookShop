@@ -39,11 +39,6 @@ public class BookController {
     @Autowired
     BookService bookService;
 
-
-    /**
-     *
-     * @return
-     */
     @GetMapping("/list")
     @ApiOperation(value = "Find list of all books",
             notes = "Returns the entire list of books",
@@ -59,11 +54,6 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
-    /**
-     *
-     * @param id
-     * @return
-     */
     @GetMapping("/{id}")
     @ApiOperation(value = "Find the book by id",
             notes = "Provide an id to search specific book in database",
@@ -76,6 +66,7 @@ public class BookController {
                                              @NonNull @PathVariable("id") Long id) {
         log.info("Retrieve book by book id {}.", id);
         Optional<Book> book = bookService.findBookById(id);
+
         log.debug("Book with id {} is found: {}", id, book);
         return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
