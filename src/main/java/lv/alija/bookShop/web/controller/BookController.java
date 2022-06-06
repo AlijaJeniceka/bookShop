@@ -11,7 +11,6 @@ import lv.alija.bookShop.business.service.BookService;
 import lv.alija.bookShop.model.Book;
 import lv.alija.bookShop.swagger.DescriptionVariables;
 import lv.alija.bookShop.swagger.HTMLResponseMessages;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;

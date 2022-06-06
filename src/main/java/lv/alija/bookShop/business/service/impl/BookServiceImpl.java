@@ -7,7 +7,6 @@ import lv.alija.bookShop.business.repository.BookRepository;
 import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.business.service.BookService;
 import lv.alija.bookShop.model.Book;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;

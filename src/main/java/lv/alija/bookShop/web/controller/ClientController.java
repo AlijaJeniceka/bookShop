@@ -4,13 +4,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lv.alija.bookShop.business.service.ClientService;
 import lv.alija.bookShop.model.Client;
 import lv.alija.bookShop.swagger.DescriptionVariables;
 import lv.alija.bookShop.swagger.HTMLResponseMessages;
 import org.kie.api.runtime.KieSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -25,14 +25,13 @@ import javax.validation.Valid;
 @Api(tags = {DescriptionVariables.CLIENT})
 @Log4j2
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/client")
 public class ClientController {
 
-    @Autowired
-    private KieSession kieSession;
+    private final KieSession kieSession;
 
-    @Autowired
-    ClientService clientService;
+    private final ClientService clientService;
 
     @PostMapping
     @ApiOperation(value = "Saves the client in the database",
