@@ -3,13 +3,16 @@ package lv.alija.bookShop.business.mapper;
 import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.model.Book;
 import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @WebMvcTest(BookMapperImpl.class)
 class BookMapperTest {
@@ -18,7 +21,7 @@ class BookMapperTest {
     private BookMapper bookMapper;
 
     @Test
-    void bookToBookDAO() {
+    void bookToBookDAOTest() {
         Book book = new Book();
         book.setId(3L);
         book.setTitle("Title");
@@ -40,7 +43,15 @@ class BookMapperTest {
     }
 
     @Test
-    void bookDAOToBook() {
+    void bookToBookDAOInvalidTest(){
+        Book book = null;
+        BookDAO bookDAO = bookMapper.bookToBookDAO(book);
+        assertNull(null);
+
+    }
+
+    @Test
+    void bookDAOToBookTest() {
         BookDAO bookDAO = new BookDAO();
         bookDAO.setId(4L);
         bookDAO.setTitle("Title");
@@ -59,5 +70,12 @@ class BookMapperTest {
         assertEquals(book.getIsbn(), bookDAO.getIsbn());
         assertEquals(book.getQuantity(), bookDAO.getQuantity());
         assertEquals(book.getPrice(), bookDAO.getPrice());
+    }
+    @Test
+    void bookDAOToBookInvalidTest(){
+        BookDAO bookDAO = null;
+        Book book = bookMapper.bookDAOToBook(bookDAO);
+        assertNull(null);
+
     }
 }
