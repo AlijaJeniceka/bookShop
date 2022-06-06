@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookShopApplicationTest {
 
     @Test
-    void applicationStarts() {
+    void applicationStartsTest() {
         BookShopApplication.main(new String[] {});
 
     }
