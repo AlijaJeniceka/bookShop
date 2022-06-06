@@ -1,5 +1,6 @@
 package lv.alija.bookShop.business.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lv.alija.bookShop.business.mapper.BookMapper;
 import lv.alija.bookShop.business.repository.model.BookDAO;
@@ -20,13 +21,12 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    @Autowired
-    BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    @Autowired
-    BookMapper bookMapper;
+    private final BookMapper bookMapper;
 
     @Cacheable(value = "bookList")
     @Scheduled(fixedDelay = 300000)

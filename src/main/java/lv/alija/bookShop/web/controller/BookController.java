@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lv.alija.bookShop.business.service.BookService;
 import lv.alija.bookShop.model.Book;
@@ -33,11 +34,11 @@ import java.util.Optional;
 @Api(tags = {DescriptionVariables.BOOK})
 @Log4j2
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/book")
 public class BookController {
 
-    @Autowired
-    BookService bookService;
+   private final BookService bookService;
 
     @GetMapping("/list")
     @ApiOperation(value = "Find list of all books",
