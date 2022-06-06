@@ -60,10 +60,11 @@ class BookControllerTest {
         verify(bookService, times(1)).findAllBooks();
     }
 
+
     @Test
     void findBookByIdTest() throws Exception {
         Optional<Book> book = Optional.of(createBook());
-        when(bookService.findBookById(anyLong())).thenReturn(book);
+        when(bookService.findBookById(1L)).thenReturn(book);
 
         ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
                         .get(URL + "/1"))
@@ -77,16 +78,16 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.quantity").value(2L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(4L))
                 .andExpect(status().isOk());
-        verify(bookService, times(1)).findBookById(anyLong());
+        verify(bookService, times(1)).findBookById(1L);
     }
 
     @Test
     void findBookById_InvalidTest() throws Exception {
         Optional<Book> book = Optional.of(createBook());
-        book.get().setId(null);
-        when(bookService.findBookById(anyLong())).thenReturn(Optional.empty());
+
+        when(bookService.findBookById(3L)).thenReturn(Optional.empty());
         ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .get(URL + null)
+                        .get(URL + "/3")
                         .content(asJsonString(book))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))

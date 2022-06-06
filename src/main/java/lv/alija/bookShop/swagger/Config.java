@@ -32,7 +32,7 @@ public class Config {
     private Docket appendTags(Docket docket) {
         return docket.tags(
                 new Tag(DescriptionVariables.BOOK,
-                        "Used to get, create, update and delete book from bookShop"),
+                        "Used to get, create, update and delete book from book shop"),
                 new Tag(DescriptionVariables.CLIENT,
                         "Used to create client from bookShop")
         );
@@ -40,8 +40,8 @@ public class Config {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Book shop API")
-                .description("Book shop API")
+                .title("Book Shop API")
+                .description("Book Shop API")
                 .version("1.0")
                 .build();
     }

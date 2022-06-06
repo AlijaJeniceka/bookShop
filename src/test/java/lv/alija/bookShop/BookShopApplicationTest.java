@@ -3,11 +3,13 @@ package lv.alija.bookShop;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
 @SpringBootTest
-class BookShopApplicationTests {
+class BookShopApplicationTest {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void applicationStartsTest() {
+        BookShopApplication.main(new String[] {});
 
+    }
 }

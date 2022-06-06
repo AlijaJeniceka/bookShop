@@ -1,5 +1,6 @@
 package lv.alija.bookShop.business.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lv.alija.bookShop.business.mapper.BookMapper;
 import lv.alija.bookShop.business.repository.BookRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -19,15 +21,15 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
-    @Autowired
-    BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    @Autowired
-    BookMapper bookMapper;
+    private final BookMapper bookMapper;
 
     @Cacheable(value = "bookList")
+    @Scheduled(fixedDelay = 300000)
     @Override
     public List<Book> findAllBooks() {
         List<BookDAO> booksDAO = bookRepository.findAll();

@@ -13,7 +13,6 @@ import javax.persistence.Table;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "book")
 public class BookDAO {
@@ -44,6 +43,4 @@ public class BookDAO {
     @Column(name = "price")
     private Long price;
 
-    public BookDAO(Long bookId) {
-    }
 }
