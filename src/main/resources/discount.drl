@@ -32,3 +32,10 @@ clientObject: Client(type == type.PERSON && documentForDiscount==true);
 then
 clientObject.setDiscount(5L);
 end;
+
+rule "Any"
+when
+clientObject: Client(type == type.ANY && documentForDiscount==false);
+then
+clientObject.setDiscount(0L);
+end;

@@ -4,5 +4,6 @@ public enum ClientTypes {
     PERSON,
     SENIOR,
     STUDENT,
-    SCHOLAR;
+    SCHOLAR,
+    ANY;
 }

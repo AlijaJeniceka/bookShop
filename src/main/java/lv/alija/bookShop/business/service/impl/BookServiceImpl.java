@@ -58,6 +58,7 @@ public class BookServiceImpl implements BookService {
         return bookMapper.bookDAOToBook(bookSaved);
     }
 
+    @CacheEvict(cacheNames = "bookList", allEntries = true)
     @Override
     public Book updateBook(Book book) throws Exception {
         BookDAO bookDAO = bookMapper.bookToBookDAO(book);
@@ -66,6 +67,7 @@ public class BookServiceImpl implements BookService {
         return bookMapper.bookDAOToBook(bookSaved);
     }
 
+    @CacheEvict(cacheNames = "bookList", allEntries = true)
     @Override
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
