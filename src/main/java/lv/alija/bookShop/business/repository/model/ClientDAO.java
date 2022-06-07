@@ -16,7 +16,6 @@ import javax.persistence.Table;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "client")
 public class ClientDAO {

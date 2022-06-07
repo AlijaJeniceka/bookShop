@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ApiModel(description = "Model of client data")
 public class Client {
 
@@ -27,6 +26,7 @@ public class Client {
 
     @ApiModelProperty(notes = "Client's age")
     @NotNull
+    @Min(value=0)
     private Long age;
 
     @ApiModelProperty(notes = "Client's discount")

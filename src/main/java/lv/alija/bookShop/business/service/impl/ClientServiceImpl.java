@@ -10,25 +10,22 @@ import lv.alija.bookShop.model.Client;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
 
-
-   private final ClientMapper clientMapper;
-   private final  ClientRepository clientRepository;
+    private final ClientMapper clientMapper;
+    private final ClientRepository clientRepository;
 
     @Override
     public List<Client> findAllClients() {
-        return null;
-    }
-
-    @Override
-    public Optional<Client> findClientsById(Long id) {
-        return Optional.empty();
+        List<ClientDAO> clientDAO = clientRepository.findAll();
+        log.info("Get client list. Size is : {}", clientDAO::size);
+        return clientDAO.stream().map(clientMapper::clientDAOToClient)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -37,14 +34,5 @@ public class ClientServiceImpl implements ClientService {
         ClientDAO clientSaved = clientRepository.save(clientDAO);
         log.info("Client is created: {}", () -> clientSaved);
         return clientMapper.clientDAOToClient(clientSaved);
-    }
-
-    @Override
-    public void deleteClientById(Long id) {
-    }
-
-    @Override
-    public Client updateClient(Client client) throws Exception {
-        return null;
     }
 }

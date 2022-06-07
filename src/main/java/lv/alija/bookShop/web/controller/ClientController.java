@@ -14,6 +14,7 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(tags = {DescriptionVariables.CLIENT})
 @Log4j2
@@ -32,6 +34,21 @@ public class ClientController {
     private final KieSession kieSession;
 
     private final ClientService clientService;
+
+    @GetMapping("/list")
+    @ApiOperation(value = "Find list of all clients",
+            notes = "Returns the entire list of clients",
+            response = Client.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200, response = Client.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
+    public ResponseEntity<List<Client>> findAllClients() {
+        log.info("Retrieve list of the books.");
+        List<Client> clients = clientService.findAllClients();
+        log.debug("Client list is found.Size: {}", clients::size);
+        return ResponseEntity.ok(clients);
+    }
 
     @PostMapping
     @ApiOperation(value = "Saves the client in the database",
