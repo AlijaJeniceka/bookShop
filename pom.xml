@@ -11,7 +11,7 @@
 	<groupId>lv.alija</groupId>
 	<artifactId>bookShop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>library</name>
+	<name>bookShop</name>
 	<description>Project for Spring Boot microservice</description>
 	<properties>
 		<java.version>1.8</java.version>
