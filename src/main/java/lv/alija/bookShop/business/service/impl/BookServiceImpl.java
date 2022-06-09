@@ -38,6 +38,15 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> findBookListByAuthor(String author){
+        List<BookDAO> bookDAOList = bookRepository.findAll();
+        return bookDAOList.stream().filter(byAuthor -> byAuthor.getAuthor()
+                        .equalsIgnoreCase(author))
+                        .map(bookMapper::bookDAOToBook)
+                        .collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<Book> findBookById(Long id) {
         Optional<Book> bookById = bookRepository.findById(id)
                 .flatMap(bookDAO -> Optional.ofNullable(bookMapper.bookDAOToBook(bookDAO)));

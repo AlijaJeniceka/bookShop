@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -72,10 +73,23 @@ class BookServiceTest {
     @Test
     void findAllBooks_InvalidTest() {
         when(bookRepository.findAll()).thenReturn(Collections.emptyList());
-        Assertions.assertTrue(bookService.findAllBooks().isEmpty());
+        assertTrue(bookService.findAllBooks().isEmpty());
         verify(bookRepository, times(1)).findAll();
     }
-
+    @Test
+    void findBookListByAuthorTest() {
+        when(bookRepository.findAll()).thenReturn(bookDAOList);
+        when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
+        List<Book> books = bookService.findBookListByAuthor("author1");
+        assertEquals(2, books.size());
+        verify(bookRepository, times(1)).findAll();
+    }
+    @Test
+    void findBookListByAuthor_InvalidTest() {
+        when(bookRepository.findAll()).thenReturn(Collections.emptyList());
+        assertTrue(bookService.findBookListByAuthor("author").isEmpty());
+        verify(bookRepository, times(1)).findAll();
+    }
     @Test
     void findBookByIdTest() {
         when(bookRepository.findById(anyLong())).thenReturn(Optional.of(bookDAO));
