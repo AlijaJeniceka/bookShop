@@ -50,6 +50,5 @@ public class Book implements Serializable {
 
     @ApiModelProperty(notes = "Book price")
     @Min(value = 0)
-    @NotNull
     private Long price;
 }

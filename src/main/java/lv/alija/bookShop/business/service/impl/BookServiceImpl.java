@@ -3,11 +3,10 @@ package lv.alija.bookShop.business.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lv.alija.bookShop.business.mapper.BookMapper;
+import lv.alija.bookShop.business.repository.BookRepository;
 import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.business.service.BookService;
-import lv.alija.bookShop.business.repository.BookRepository;
 import lv.alija.bookShop.model.Book;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -39,6 +38,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Book> findByAuthor(String author){
+        List<BookDAO> bookDAOList = bookRepository.findByAuthor(author);
+        return bookDAOList.stream().map(bookMapper::bookDAOToBook)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<Book> findBookById(Long id) {
         Optional<Book> bookById = bookRepository.findById(id)
                 .flatMap(bookDAO -> Optional.ofNullable(bookMapper.bookDAOToBook(bookDAO)));
@@ -59,6 +65,7 @@ public class BookServiceImpl implements BookService {
         return bookMapper.bookDAOToBook(bookSaved);
     }
 
+    @CacheEvict(cacheNames = "bookList", allEntries = true)
     @Override
     public Book updateBook(Book book) throws Exception {
         BookDAO bookDAO = bookMapper.bookToBookDAO(book);
@@ -67,6 +74,7 @@ public class BookServiceImpl implements BookService {
         return bookMapper.bookDAOToBook(bookSaved);
     }
 
+    @CacheEvict(cacheNames = "bookList", allEntries = true)
     @Override
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);

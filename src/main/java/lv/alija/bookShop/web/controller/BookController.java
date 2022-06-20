@@ -11,7 +11,6 @@ import lv.alija.bookShop.business.service.BookService;
 import lv.alija.bookShop.model.Book;
 import lv.alija.bookShop.swagger.DescriptionVariables;
 import lv.alija.bookShop.swagger.HTMLResponseMessages;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -52,6 +51,21 @@ public class BookController {
         log.info("Retrieve list of the books.");
         List<Book> books = bookService.findAllBooks();
         log.debug("Book list is found.Size: {}", books::size);
+        return ResponseEntity.ok(books);
+    }
+
+    @GetMapping("/list/{author}")
+    @ApiOperation(value = "Find list of books by author",
+            notes = "Returns the entire list of books by author",
+            response = Book.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200, response = Book.class, responseContainer = "List"),
+            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
+            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
+    public ResponseEntity<List<Book>> findAllByAuthor(@NonNull @PathVariable("author") String author) {
+        log.info("Retrieve list of the books by author {}.", author);
+        List<Book> books = bookService.findByAuthor(author);
+        log.debug("Book list by author is found.Size: {}", books::size);
         return ResponseEntity.ok(books);
     }
 

@@ -10,8 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.web.client.HttpClientErrorException;
@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -33,14 +34,14 @@ import static org.mockito.Mockito.verify;
 @AutoConfigureMockMvc
 class BookServiceTest {
 
-    @Mock
-    private BookRepository bookRepository;
-
     @InjectMocks
-    private BookServiceImpl bookService;
+    BookServiceImpl bookService;
 
-    @Mock
-    private BookMapper bookMapper;
+    @Spy
+    BookRepository bookRepository;
+
+    @Spy
+    BookMapper bookMapper;
 
     private Book book;
     private BookDAO bookDAO;
@@ -65,17 +66,30 @@ class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(bookDAOList);
         when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
         List<Book> books = bookService.findAllBooks();
-        assertEquals(2, bookList.size());
+        assertEquals(2, books.size());
         verify(bookRepository, times(1)).findAll();
     }
 
     @Test
     void findAllBooks_InvalidTest() {
         when(bookRepository.findAll()).thenReturn(Collections.emptyList());
-        Assertions.assertTrue(bookService.findAllBooks().isEmpty());
+        assertTrue(bookService.findAllBooks().isEmpty());
         verify(bookRepository, times(1)).findAll();
     }
-
+    @Test
+    void findBookListByAuthorTest() {
+        when(bookRepository.findAll()).thenReturn(bookDAOList);
+        when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
+        List<Book> books = bookService.findByAuthor("author1");
+        assertEquals(2, books.size());
+        verify(bookRepository, times(1)).findAll();
+    }
+    @Test
+    void findBookListByAuthor_InvalidTest() {
+        when(bookRepository.findAll()).thenReturn(Collections.emptyList());
+        assertTrue(bookService.findByAuthor("author").isEmpty());
+        verify(bookRepository, times(1)).findAll();
+    }
     @Test
     void findBookByIdTest() {
         when(bookRepository.findById(anyLong())).thenReturn(Optional.of(bookDAO));

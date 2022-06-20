@@ -3,9 +3,12 @@ package lv.alija.bookShop.business.repository.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lv.alija.bookShop.model.enums.ClientTypes;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,33 +17,25 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
-public class BookDAO {
+@Table(name = "client")
+public class ClientDAO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ClientTypes type;
 
-    @Column(name = "author")
-    private String author;
+    @Column(name = "age")
+    private Long age;
 
-    @Column(name = "genre")
-    private String genre;
+    @Column(name = "discount")
+    private Long discount;
 
-    @Column(name = "release_year")
-    private Long releaseYear;
-
-    @Column(name = "isbn")
-    private String isbn;
-
-    @Column(name = "quantity")
-    private Long quantity;
-
-    @Column(name = "price")
-    private Long price;
+    @Column(name = "document_for_discount")
+    private boolean documentForDiscount;
 
 }

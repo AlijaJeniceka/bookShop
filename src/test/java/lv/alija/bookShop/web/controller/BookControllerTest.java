@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +60,25 @@ class BookControllerTest {
                 .andExpect(status().isOk());
         verify(bookService, times(1)).findAllBooks();
     }
-
+    @Test
+    void findBookByAuthorTest() throws Exception {
+        List<Book> bookList = createBookList();
+        when(bookService.findByAuthor("author1")).thenReturn(bookList);
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .get(URL + "/list/author1"))
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Title1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].author").value("Author1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].genre").value("Genre1"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(2022L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value("000-00-00-0001"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity").value(2L))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(4L))
+                .andExpect(status().isOk());
+        verify(bookService, times(1)).findByAuthor("author1");
+    }
 
     @Test
     void findBookByIdTest() throws Exception {

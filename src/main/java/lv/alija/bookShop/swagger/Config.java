@@ -32,7 +32,9 @@ public class Config {
     private Docket appendTags(Docket docket) {
         return docket.tags(
                 new Tag(DescriptionVariables.BOOK,
-                        "Used to get, create, update and delete book from book shop")
+                        "Used to get, create, update and delete book from book shop"),
+                new Tag(DescriptionVariables.CLIENT,
+                        "Used to create client from bookShop")
         );
     }
 
