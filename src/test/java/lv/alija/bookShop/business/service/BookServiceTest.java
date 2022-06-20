@@ -80,14 +80,14 @@ class BookServiceTest {
     void findBookListByAuthorTest() {
         when(bookRepository.findAll()).thenReturn(bookDAOList);
         when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
-        List<Book> books = bookService.findBookListByAuthor("author1");
+        List<Book> books = bookService.findByAuthor("author1");
         assertEquals(2, books.size());
         verify(bookRepository, times(1)).findAll();
     }
     @Test
     void findBookListByAuthor_InvalidTest() {
         when(bookRepository.findAll()).thenReturn(Collections.emptyList());
-        assertTrue(bookService.findBookListByAuthor("author").isEmpty());
+        assertTrue(bookService.findByAuthor("author").isEmpty());
         verify(bookRepository, times(1)).findAll();
     }
     @Test

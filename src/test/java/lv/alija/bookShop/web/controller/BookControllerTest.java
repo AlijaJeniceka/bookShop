@@ -63,7 +63,7 @@ class BookControllerTest {
     @Test
     void findBookByAuthorTest() throws Exception {
         List<Book> bookList = createBookList();
-        when(bookService.findBookListByAuthor("author1")).thenReturn(bookList);
+        when(bookService.findByAuthor("author1")).thenReturn(bookList);
         ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
                         .get(URL + "/list/author1"))
                 .andExpect(content().contentType(APPLICATION_JSON))
@@ -77,7 +77,7 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity").value(2L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(4L))
                 .andExpect(status().isOk());
-        verify(bookService, times(1)).findBookListByAuthor("author1");
+        verify(bookService, times(1)).findByAuthor("author1");
     }
 
     @Test

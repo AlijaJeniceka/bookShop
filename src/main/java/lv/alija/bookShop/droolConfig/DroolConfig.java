@@ -1,4 +1,4 @@
-package lv.alija.bookShop.drollConfig;
+package lv.alija.bookShop.droolConfig;
 
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
@@ -17,9 +17,9 @@ import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 
 @Configuration
-public class DrollConfig {
+public class DroolConfig {
 
-    private final Logger LOG = LoggerFactory.getLogger(DrollConfig.class);
+    private final Logger LOG = LoggerFactory.getLogger(DroolConfig.class);
     private KieServices kieService = KieServices.Factory.get();
 
     private KieFileSystem getKieFileSystem() throws IOException {

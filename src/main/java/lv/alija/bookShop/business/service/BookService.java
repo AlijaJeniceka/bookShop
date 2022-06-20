@@ -17,5 +17,5 @@ public interface BookService {
 
     Book updateBook(Book book) throws Exception;
 
-    List<Book> findBookListByAuthor(String author);
+    List<Book> findByAuthor(String author);
 }

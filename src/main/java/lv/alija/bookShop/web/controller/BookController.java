@@ -64,7 +64,7 @@ public class BookController {
             @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     public ResponseEntity<List<Book>> findAllByAuthor(@NonNull @PathVariable("author") String author) {
         log.info("Retrieve list of the books by author {}.", author);
-        List<Book> books = bookService.findBookListByAuthor(author);
+        List<Book> books = bookService.findByAuthor(author);
         log.debug("Book list by author is found.Size: {}", books::size);
         return ResponseEntity.ok(books);
     }
