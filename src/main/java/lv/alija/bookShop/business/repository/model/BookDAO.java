@@ -1,6 +1,5 @@
 package lv.alija.bookShop.business.repository.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
