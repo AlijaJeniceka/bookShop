@@ -1,7 +1,9 @@
 package lv.alija.bookShop.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,15 +12,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-
 @ApiModel(description = "Model of book data")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@JsonFilter("BooksFilter")
 public class Book implements Serializable {
 
     @ApiModelProperty(notes = "The unique id of the book should be more then 0")
     @Min(value = 1)
     private Long id;
+
 
     @ApiModelProperty(notes = "Title of the book")
     @NotNull

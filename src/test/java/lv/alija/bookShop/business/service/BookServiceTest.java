@@ -4,8 +4,8 @@ import lv.alija.bookShop.business.mapper.BookMapper;
 import lv.alija.bookShop.business.repository.BookRepository;
 import lv.alija.bookShop.business.repository.model.BookDAO;
 import lv.alija.bookShop.business.service.impl.BookServiceImpl;
+import lv.alija.bookShop.exception.BookControllerException;
 import lv.alija.bookShop.model.Book;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,10 +22,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -71,11 +69,13 @@ class BookServiceTest {
     }
 
     @Test
-    void findAllBooks_InvalidTest() {
-        when(bookRepository.findAll()).thenReturn(Collections.emptyList());
-        assertTrue(bookService.findAllBooks().isEmpty());
-        verify(bookRepository, times(1)).findAll();
+    void findAllBooks_EmptyList_InvalidTest(){
+       when(bookRepository.findAll()).thenReturn(Collections.emptyList())
+               .thenThrow(new BookControllerException(HttpStatus.NOT_FOUND, "Book list is empty"));
+       assertThrows(BookControllerException.class, () -> bookService.findAllBooks());
+       verify(bookRepository, times(1)).findAll();
     }
+
     @Test
     void findBookListByAuthorTest() {
         when(bookRepository.findByAuthor("Author1")).thenReturn(bookDAOList);
@@ -84,12 +84,15 @@ class BookServiceTest {
         assertEquals(2, books.size());
         verify(bookRepository, times(1)).findByAuthor("Author1");
     }
+
     @Test
-    void findBookListByAuthor_InvalidTest() {
-        when(bookRepository.findByAuthor("")).thenReturn(Collections.emptyList());
-        assertTrue(bookService.findByAuthor("").isEmpty());
+    void findBookListByAuthor_EmptyList_InvalidTest() {
+        when(bookRepository.findByAuthor("")).thenReturn(Collections.emptyList())
+                .thenThrow(new BookControllerException(HttpStatus.NOT_FOUND, "Book list is empty"));
+        assertThrows(BookControllerException.class, () -> bookService.findByAuthor(""));
         verify(bookRepository, times(1)).findByAuthor("");
     }
+
     @Test
     void findBookByIdTest() {
         when(bookRepository.findById(anyLong())).thenReturn(Optional.of(bookDAO));
@@ -107,10 +110,15 @@ class BookServiceTest {
     }
 
     @Test
-    void findBookById_InvalidTest() {
-        when(bookRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertFalse(bookService.findBookById(anyLong()).isPresent());
-        verify(bookRepository, times(1)).findById(anyLong());
+    void findBookById_idNegativeOrNull_InvalidTest() {
+        assertThrows(BookControllerException.class, () -> bookService.findBookById(-1L));
+        verify(bookRepository, times(0)).findById(-1L);
+    }
+
+    @Test
+    void findBookById_idPositiveButNotFound_InvalidTest() {
+        assertThrows(BookControllerException.class, () -> bookService.findBookById(5L));
+        verify(bookRepository, times(1)).findById(5L);
     }
 
     @Test
@@ -127,12 +135,12 @@ class BookServiceTest {
     void saveBookTest_InvalidTest() {
         when(bookRepository.save(bookDAO)).thenThrow(new IllegalArgumentException());
         when(bookMapper.bookToBookDAO(book)).thenReturn(bookDAO);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> bookService.saveBook(book));
+        assertThrows(IllegalArgumentException.class, () -> bookService.saveBook(book));
         verify(bookRepository, times(1)).save(bookDAO);
     }
 
     @Test
-    void saveBookTest_InvalidDuplicateTest() {
+    void saveBookTest_InvalidDuplicateTest() throws Exception {
         Book bookSaved = createBook();
         bookSaved.setId(1L);
         bookSaved.setAuthor("Author1");
@@ -143,21 +151,32 @@ class BookServiceTest {
         bookSaved.setQuantity(2L);
         bookSaved.setPrice(4L);
         when(bookRepository.findAll()).thenReturn(bookDAOList);
-        Assertions.assertThrows(HttpClientErrorException.class, () -> bookService.saveBook(bookSaved));
+        assertThrows(BookControllerException.class, () -> bookService.saveBook(bookSaved));
         verify(bookRepository, times(0)).save(bookDAO);
     }
 
     @Test
     void deleteBookByIdTest() {
-        bookService.deleteBookById(anyLong());
-        verify(bookRepository, times(1)).deleteById(anyLong());
+        when(bookRepository.findById(1L)).thenReturn(Optional.of(bookDAO));
+        when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
+        Optional<Book> bookById = bookService.findBookById(book.getId());
+        bookService.deleteBookById(bookById.get().getId());
+        verify(bookRepository, times(1)).deleteById(bookById.get().getId());
     }
 
     @Test
-    void deleteBookById_InvalidTest() {
-        doThrow(new IllegalArgumentException()).when(bookRepository).deleteById(anyLong());
-        Assertions.assertThrows(IllegalArgumentException.class,
-                () -> bookService.deleteBookById(anyLong()));
+    void deleteBookById_idPositiveButNotFound_InvalidTest() {
+        assertThrows(BookControllerException.class,
+                () -> bookService.deleteBookById(56L));
+        verify(bookRepository, times(1)).findById(56L);
+        verify(bookRepository, times(0)).deleteById(56L);
+    }
+    @Test
+    void deleteBookById_idNegativeOrNull_InvalidTest() {
+        assertThrows(BookControllerException.class,
+                () -> bookService.deleteBookById(-1L));
+        verify(bookRepository, times(0)).findById(-1L);
+        verify(bookRepository, times(0)).deleteById(-1L);
     }
 
     @Test
@@ -165,17 +184,15 @@ class BookServiceTest {
         when(bookRepository.save(bookDAO)).thenReturn(bookDAO);
         when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
         when(bookMapper.bookToBookDAO(book)).thenReturn(bookDAO);
-        Book bookSaved = bookService.updateBook(book);
+        Book bookSaved = bookService.updateBook(book, 1L);
         assertEquals(book, bookSaved);
         verify(bookRepository, times(1)).save(bookDAO);
     }
 
     @Test
-    void updateBookTest_InvalidTest() {
-        when(bookRepository.save(bookDAO)).thenThrow(new IllegalArgumentException());
-        when(bookMapper.bookToBookDAO(book)).thenReturn(bookDAO);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> bookService.updateBook(book));
-        verify(bookRepository, times(1)).save(bookDAO);
+    void updateBookTest_WithIncorrectId_InvalidTest() {
+        assertThrows(BookControllerException.class, () -> bookService.updateBook(book, 3L));
+        verify(bookRepository, times(0)).save(bookDAO);
     }
 
     private List<BookDAO> createBookDAOList() {

@@ -11,5 +11,4 @@ public interface BookMapper {
 
     Book bookDAOToBook(BookDAO bookDAO);
 
-
 }

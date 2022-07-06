@@ -2,6 +2,7 @@ package lv.alija.bookShop.business.service;
 
 import lv.alija.bookShop.model.Book;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ public interface BookService {
 
     void deleteBookById(Long id);
 
-    Book updateBook(Book book) throws Exception;
+    Book updateBook(Book book, Long id) throws Exception;
 
     List<Book> findByAuthor(String author);
 }
