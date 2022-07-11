@@ -1,19 +1,13 @@
 package lv.alija.bookShop.web.controller;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lv.alija.bookShop.business.service.impl.BookServiceImpl;
 import lv.alija.bookShop.model.Book;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -38,7 +32,6 @@ class BookControllerTest {
     public static String URL = "/book";
 
     @Autowired
-    @JsonFilter("BooksFilter")
     private MockMvc mockMvc;
 
     @Autowired
@@ -47,18 +40,6 @@ class BookControllerTest {
     @MockBean
     private BookServiceImpl bookService;
 
-//    @InjectMocks
-//    @JsonFilter("BooksFilter")
-//    private Book book;
-
-    @BeforeEach
-    void init(){
-       Book book = createBook();
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAll();
-        FilterProvider filters = new SimpleFilterProvider().addFilter("BooksFilter", filter);
-        MappingJacksonValue mapping = new MappingJacksonValue(book);
-        mapping.setFilters(filters);
-    }
 
     @Test
     void findAllBooksTest() throws Exception {
@@ -76,21 +57,6 @@ class BookControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].releaseYear").value(2022L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value("000-00-00-0001"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].quantity").value(2L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(4L))
-                .andExpect(status().isOk());
-        verify(bookService, times(1)).findAllBooks();
-    }
-    @Test
-    void findAllBooks_onlyWithThreeParameters_Test() throws Exception {
-        List<Book> bookList = createBookList();
-        when(bookService.findAllBooks()).thenReturn(bookList);
-
-        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .get(URL + "/filtered"))
-                .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value("Title1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].author").value("Author1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(4L))
                 .andExpect(status().isOk());
         verify(bookService, times(1)).findAllBooks();
@@ -138,17 +104,13 @@ class BookControllerTest {
     @Test
     void saveBookTest() throws Exception {
         Book book = createBook();
-
         when(bookService.saveBook(book)).thenReturn(book);
-       // filterAllProperties(book);
-
         ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
                         .post(URL)
-                        .content(String.valueOf((book)))
-                       // .content(asJsonString(new MappingJacksonValue(book)))
+                        .content(asJsonString(book))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         verify(bookService, times(1)).saveBook(book);
     }
 
@@ -175,7 +137,7 @@ class BookControllerTest {
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
-                .andExpect(status().isCreated());
+                .andExpect(status().isAccepted());
         verify(bookService, times(1)).updateBook(book, book.getId());
     }
 
@@ -194,17 +156,17 @@ class BookControllerTest {
         verify(bookService, times(0)).updateBook(book, book.getId());
     }
 
-    @Test
-    void updateBookByIdTestNotFound_InvalidTest() throws Exception {
-        Book book = createBook();
-        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .put(URL + "/3")
-                        .content(asJsonString(book))
-                        .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-        verify(bookService, times(0)).updateBook(book, book.getId());
-    }
+//    @Test
+//    void updateBookByIdTestNotFound_InvalidTest() throws Exception {
+//        Book book = createBook();
+//        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+//                        .put(URL + "/3")
+//                        .content(asJsonString(book))
+//                        .contentType(APPLICATION_JSON)
+//                        .accept(APPLICATION_JSON))
+//                .andExpect(status().isNotFound());
+//        verify(bookService, times(0)).updateBook(book, book.getId());
+//    }
 
     @Test
     void deleteBookByIdTest() throws Exception {

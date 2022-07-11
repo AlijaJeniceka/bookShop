@@ -58,26 +58,11 @@ public class BookController {
             @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200, response = Book.class, responseContainer = "List"),
             @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
             @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
-    public MappingJacksonValue findAllBooks() {
+    public ResponseEntity<List<Book>> findAllBooks() {
         log.info("Retrieve list of the books.");
         List<Book> books = bookService.findAllBooks();
         log.debug("Book list is found.Size: {}", books::size);
-        return allPropertiesToGET(books);
-    }
-
-    @GetMapping("/filtered")
-    @ApiOperation(value = "Find list of all books with title, author and price",
-            notes = "Returns the entire list of books only with author, title and price",
-            response = Book.class, responseContainer = "List")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200, response = Book.class, responseContainer = "List"),
-            @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
-            @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
-    public MappingJacksonValue findAllBooksFiltered() {
-        log.info("Retrieve list of the books only with book name and price.");
-        List<Book> books = bookService.findAllBooks();
-        log.debug("Book list is found.Size: {}", books::size);
-        return filterSomeProperties(books);
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/list/{author}")
@@ -88,11 +73,11 @@ public class BookController {
             @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200, response = Book.class, responseContainer = "List"),
             @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
             @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
-    public MappingJacksonValue findAllByAuthor(@NonNull @PathVariable("author") String author) {
+    public ResponseEntity<List<Book>> findAllByAuthor(@NonNull @PathVariable("author") String author) {
         log.info("Retrieve list of the books by author {}.", author);
         List<Book> books = bookService.findByAuthor(author);
         log.debug("Book list by author is found.Size: {}", books::size);
-        return allPropertiesToGET(books);
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/{id}")
@@ -103,12 +88,12 @@ public class BookController {
             @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200),
             @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
             @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
-    public MappingJacksonValue findBookById(@ApiParam(value = "id of the book", required = true)
+    public ResponseEntity<Optional<Book>> findBookById(@ApiParam(value = "id of the book", required = true)
                                              @NonNull @PathVariable("id") @Min(value=1) Long id) {
         log.info("Retrieve book by book id {}.", id);
         Optional<Book> book = bookService.findBookById(id);
         log.debug("Book with id {} is found: {}", id, book);
-        return allPropertiesToGET(book);
+        return ResponseEntity.ok(book);
     }
 
     @PostMapping
@@ -130,7 +115,7 @@ public class BookController {
         }
              Book bookSaved = bookService.saveBook(book);
              log.debug("New book is created: {}", book);
-             return filterAllProperties(bookSaved);
+             return new ResponseEntity<>(bookSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -156,7 +141,7 @@ public class BookController {
         Optional<Book> book = bookService.findBookById(id);
         bookService.updateBook(updatedBook, id);
         log.debug("Book with id {} is updated: {}", id, updatedBook);
-        return filterAllProperties(updatedBook);
+        return new ResponseEntity<>(updatedBook, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
@@ -177,44 +162,5 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /**
-     *      Method to use all Book model properties
-     * @param book Object is Book model
-     * @return object with all the parameters, that is declared in Book model
-     */
-    public ResponseEntity<Book> filterAllProperties(Book book ) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAll();
-        FilterProvider filters = new SimpleFilterProvider().addFilter("BooksFilter", filter);
-        ObjectWriter writer = mapper.writer(filters);
-        String writeValueAsString = writer.writeValueAsString(book);
-        book = mapper.readValue(writeValueAsString, Book.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(book);
-    }
-
-    /**
-     * Method to use only needed Book model properties
-     * @param obj In such case object is Book model
-     * @return object with only three parameters: title. author and price
-     */
-    public MappingJacksonValue filterSomeProperties(Object obj ){
-        SimpleBeanPropertyFilter  filter = SimpleBeanPropertyFilter.filterOutAllExcept("title", "author", "price");
-        FilterProvider filters = new SimpleFilterProvider().addFilter("BooksFilter", filter);
-        MappingJacksonValue mapping = new MappingJacksonValue(obj);
-        mapping.setFilters(filters);
-        return mapping;
-    }
-    /**
-     * Method to use only needed Book model properties
-     * @param obj In such case object is Book model
-     * @return object with only three parameters: title. author and price
-     */
-    public MappingJacksonValue allPropertiesToGET(Object obj ){
-        SimpleBeanPropertyFilter  filter = SimpleBeanPropertyFilter.serializeAll();
-        FilterProvider filters = new SimpleFilterProvider().addFilter("BooksFilter", filter);
-        MappingJacksonValue mapping = new MappingJacksonValue(obj);
-        mapping.setFilters(filters);
-        return mapping;
-    }
 }
 
