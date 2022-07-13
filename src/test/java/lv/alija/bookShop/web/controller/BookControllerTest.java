@@ -156,17 +156,18 @@ class BookControllerTest {
         verify(bookService, times(0)).updateBook(book, book.getId());
     }
 
-//    @Test
-//    void updateBookByIdTestNotFound_InvalidTest() throws Exception {
-//        Book book = createBook();
-//        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
-//                        .put(URL + "/3")
-//                        .content(asJsonString(book))
-//                        .contentType(APPLICATION_JSON)
-//                        .accept(APPLICATION_JSON))
-//                .andExpect(status().isNotFound());
-//        verify(bookService, times(0)).updateBook(book, book.getId());
-//    }
+    @Test
+    void updateBookByIdTestNotFound_InvalidTest() throws Exception {
+        Book book = createBook();
+        book.setTitle("");
+        ResultActions mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .put(URL + "/1")
+                        .content(asJsonString(book))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+        verify(bookService, times(0)).updateBook(book, book.getId());
+    }
 
     @Test
     void deleteBookByIdTest() throws Exception {
