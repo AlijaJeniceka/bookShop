@@ -1,11 +1,5 @@
 package lv.alija.bookShop.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.ser.FilterProvider;
-import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
-import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,7 +14,6 @@ import lv.alija.bookShop.swagger.DescriptionVariables;
 import lv.alija.bookShop.swagger.HTMLResponseMessages;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.lang.NonNull;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +32,6 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.http.ResponseEntity.status;
 
 @Api(tags = {DescriptionVariables.BOOK})
 @Log4j2
@@ -86,6 +78,7 @@ public class BookController {
             response = Book.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = HTMLResponseMessages.HTTP_200),
+            @ApiResponse(code = 400, message = HTMLResponseMessages.HTTP_400),
             @ApiResponse(code = 404, message = HTMLResponseMessages.HTTP_404),
             @ApiResponse(code = 500, message = HTMLResponseMessages.HTTP_500)})
     public ResponseEntity<Optional<Book>> findBookById(@ApiParam(value = "id of the book", required = true)
