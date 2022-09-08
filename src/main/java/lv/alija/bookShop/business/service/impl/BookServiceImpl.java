@@ -97,15 +97,7 @@ public class BookServiceImpl implements BookService {
     @CacheEvict(cacheNames = "bookList", allEntries = true)
     @Override
     public void deleteBookById(Long id) {
-        if (id <= 0) {
-            log.warn("Book id is not null or negative number. Insert only positive numbers. ");
-            throw new BookControllerException(HttpStatus.BAD_REQUEST, "Id should be bigger then null");
-        }
         Optional<BookDAO> bookById = bookRepository.findById(id);
-        if (!bookById.isPresent()) {
-            log.warn("Book with id {} is not found. ", id);
-            throw new BookControllerException(HttpStatus.NOT_FOUND, "Book with this id is not found");
-        }
         bookRepository.deleteById(bookById.get().getId());
         log.info("Book with id {} is deleted", id);
     }

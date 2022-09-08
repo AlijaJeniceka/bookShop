@@ -165,21 +165,6 @@ class BookServiceTest {
     }
 
     @Test
-    void deleteBookById_idPositiveButNotFound_InvalidTest() {
-        assertThrows(BookControllerException.class,
-                () -> bookService.deleteBookById(56L));
-        verify(bookRepository, times(1)).findById(56L);
-        verify(bookRepository, times(0)).deleteById(56L);
-    }
-    @Test
-    void deleteBookById_idNegativeOrNull_InvalidTest() {
-        assertThrows(BookControllerException.class,
-                () -> bookService.deleteBookById(-1L));
-        verify(bookRepository, times(0)).findById(-1L);
-        verify(bookRepository, times(0)).deleteById(-1L);
-    }
-
-    @Test
     void updateBookTest() throws Exception {
         when(bookRepository.save(bookDAO)).thenReturn(bookDAO);
         when(bookMapper.bookDAOToBook(bookDAO)).thenReturn(book);
