@@ -13,34 +13,30 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
 
     @Test
     public void findAllBooksIntTest() throws JSONException {
         String response = this.restTemplate.getForObject("/book/list", String.class );
         JSONAssert.assertEquals("[{id:1}, {id:2}]", response, false);
     }
+
     @Test
     public void return400AllBooksNotFound_incorrectURL(){
         ResponseEntity<String> err = restTemplate.getForEntity("/book/li", String.class);
         assertEquals(HttpStatus.BAD_REQUEST, err.getStatusCode());
-    }
-
-    @Test
-    public void return404AllBooks_notFound(){
-        this.restTemplate.delete("/book/{id}", 2 );
-        this.restTemplate.delete("/book/{id}", 1 );
-        ResponseEntity<String> err = restTemplate.getForEntity("/book/list", String.class);
-        assertEquals(HttpStatus.NOT_FOUND, err.getStatusCode());
     }
 
     @Test
@@ -66,6 +62,7 @@ class BookControllerIntegrationTest {
         String response = this.restTemplate.getForObject("/book/list/{author}", String.class, "Author" );
         JSONAssert.assertEquals("[{id:1}]", response, false);
     }
+
     @Test
     public void return404_FindByAuthor_BadUrlAuthor(){
         ResponseEntity<String> err = restTemplate.getForEntity("/book/list/{author}", String.class, "Anything");
@@ -88,6 +85,7 @@ class BookControllerIntegrationTest {
                 () -> assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode()),
                 () -> assertEquals(book, responseEntity.getBody()));
     }
+
     @Test
     public void saveNewBookTest_incorrectInputForNewBook() throws JSONException {
         Book book = new Book();
@@ -144,6 +142,7 @@ class BookControllerIntegrationTest {
         ResponseEntity<Book> responseEntity =this.restTemplate.exchange("/book/1", HttpMethod.PUT, entity, Book.class, book);
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
+
     @Test
     public void updateNewBookTest_badRequest400_IdNegativeOrNull() throws JSONException {
         Book book = new Book();
@@ -201,6 +200,15 @@ class BookControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         ResponseEntity<String> responseEntity = this.restTemplate.exchange("/book/2", HttpMethod.DELETE, entity, String.class);
        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode() );
+    }
+
+    @Test
+    public void return404AllBooks_notFound(){
+        this.restTemplate.delete("/book/1");
+        this.restTemplate.delete("/book/2");
+        ResponseEntity<Void> emptyList = restTemplate.getForEntity("/book/list", Void.class);
+        assertEquals(HttpStatus.NOT_FOUND, emptyList.getStatusCode());
+
     }
 
 }
