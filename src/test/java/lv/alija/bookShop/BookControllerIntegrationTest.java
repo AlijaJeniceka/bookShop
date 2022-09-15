@@ -204,8 +204,8 @@ class BookControllerIntegrationTest {
 
     @Test
     public void return404AllBooks_notFound(){
-        this.restTemplate.delete("/book/1");
-        this.restTemplate.delete("/book/2");
+       // this.restTemplate.delete("/book/1");
+      //  this.restTemplate.delete("/book/2");
         ResponseEntity<Void> emptyList = restTemplate.getForEntity("/book/list", Void.class);
         assertEquals(HttpStatus.NOT_FOUND, emptyList.getStatusCode());
 
