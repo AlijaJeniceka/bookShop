@@ -19,7 +19,6 @@ public class Book implements Serializable {
     @Min(value = 1)
     private Long id;
 
-
     @ApiModelProperty(notes = "Title of the book")
     @NotNull
     @NotBlank(message = "Please fill the field - title")
